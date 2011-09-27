@@ -156,6 +156,7 @@ void CharacterModel::startBattle()
 
 void CharacterModel::nextChar()
 {
+    if(m_Characters.isEmpty()) return;
     ++_current_char;
     if (_current_char >= m_Characters.size()) {
         ++_turn;
