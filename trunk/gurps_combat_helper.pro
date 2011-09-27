@@ -18,7 +18,8 @@ SOURCES += main.cpp \
     selectdialog.cpp \
     selectmodel.cpp \
     posture.cpp \
-    effect.cpp
+    effect.cpp \
+    posturesandmaneueres.cpp
 HEADERS += mainform.h \
     charactereditor.h \
     database.h \
@@ -33,9 +34,11 @@ HEADERS += mainform.h \
     selectdialog.h \
     selectmodel.h \
     posture.h \
-    effect.h
+    effect.h \
+    posturesandmaneueres.h
 FORMS += mainform.ui \
     charactereditor.ui \
     characterlist.ui \
     categorynamedialog.ui \
-    selectdialog.ui
+    selectdialog.ui \
+    posturesandmaneueres.ui

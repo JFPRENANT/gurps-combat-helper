@@ -9,4 +9,5 @@ Posture::Posture(const QSqlRecord & record)
 {
     _id = record.value("id").toInt();
     _name = record.value("name").toString();
+    _tooltip = record.value("tooltip").toString();
 }

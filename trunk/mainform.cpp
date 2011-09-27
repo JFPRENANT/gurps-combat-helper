@@ -15,10 +15,15 @@ MainForm::MainForm(QWidget *parent) :
     ui->tvChars->resizeColumnsToContents();
     ui->tvChars->resizeRowsToContents();
 
+    m_pPosturesAndManueres = new PosturesAndManeueres(this);
+
     connect(ui->aStartBattle, SIGNAL(triggered()), &m_Chars, SLOT(startBattle()));
     connect(ui->aNextChar, SIGNAL(triggered()), &m_Chars, SLOT(nextChar()));
     connect(&m_Chars, SIGNAL(turnChanged(int)), ui->lcdTurn, SLOT(display(int)));
     connect(&m_Chars, SIGNAL(infoChanged(QString)), ui->teCharacterInfo, SLOT(setHtml(QString)));
+    connect(ui->aPandM, SIGNAL(triggered()), m_pPosturesAndManueres, SLOT(exec()));
+
+    connect(m_pPosturesAndManueres, SIGNAL(dictionariesUpdated()), &m_Chars, SLOT(onDictionariesUpdate()));
 }
 
 MainForm::~MainForm()
