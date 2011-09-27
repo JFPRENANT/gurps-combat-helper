@@ -26,6 +26,7 @@ void Character::load(int id)
         _dodge = query.record().value("dodge").toInt();
         _parry = query.record().value("parry").toInt();
         _block = query.record().value("block").toInt();
+        _info = query.record().value("notes").toString();
     }
 }
 
@@ -69,4 +70,9 @@ void Character::nextTurn()
             m_Effects.remove(eff);
         }
     }
+}
+
+QString Character::info() const
+{
+    return _info;
 }

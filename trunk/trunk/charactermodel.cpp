@@ -148,6 +148,7 @@ void CharacterModel::startBattle()
     _turn = 1;
     emit dataChanged(index(_current_char, 0), index(_current_char, COLUMN_COUNT - 1));
     emit turnChanged(_turn);
+    emit infoChanged(m_Characters[_current_char]->info());
 }
 
 void CharacterModel::nextChar()
@@ -160,4 +161,5 @@ void CharacterModel::nextChar()
     }
     m_Characters[_current_char]->nextTurn();
     emit dataChanged(index(_current_char, 0), index(_current_char, COLUMN_COUNT - 1));
+    emit infoChanged(m_Characters[_current_char]->info());
 }

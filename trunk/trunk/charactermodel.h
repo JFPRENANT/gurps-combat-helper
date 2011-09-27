@@ -56,6 +56,7 @@ class CharacterModel : public QAbstractTableModel
 
     signals:
         void turnChanged(int nTurn);
+        void infoChanged(const QString & info);
 
     private:
         QVariant displayData(const QModelIndex & index) const;
