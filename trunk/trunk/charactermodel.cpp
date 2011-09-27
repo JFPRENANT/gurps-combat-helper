@@ -144,6 +144,9 @@ QVariant CharacterModel::headerData(int section, Qt::Orientation orientation, in
 
 void CharacterModel::startBattle()
 {
+    if (m_Characters.isEmpty()) {
+        return;
+    }
     _current_char = 0;
     _turn = 1;
     emit dataChanged(index(_current_char, 0), index(_current_char, COLUMN_COUNT - 1));
