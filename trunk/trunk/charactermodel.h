@@ -54,6 +54,8 @@ class CharacterModel : public QAbstractTableModel
         void startBattle();
         void nextChar();
 
+        void onDictionariesUpdate();
+
     signals:
         void turnChanged(int nTurn);
         void infoChanged(const QString & info);

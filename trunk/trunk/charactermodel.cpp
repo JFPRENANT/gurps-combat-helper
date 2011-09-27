@@ -171,3 +171,9 @@ void CharacterModel::nextChar()
     emit dataChanged(index(_current_char, 0), index(_current_char, COLUMN_COUNT - 1));
     emit infoChanged(m_Characters[_current_char]->info());
 }
+
+void CharacterModel::onDictionariesUpdate()
+{
+    m_Maneuers = Database::inst()->maneuers();
+    m_Postures = Database::inst()->postures();
+}

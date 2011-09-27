@@ -7,6 +7,7 @@
 #include "charactermodel.h"
 #include "chardelegate.h"
 #include "selectdialog.h"
+#include "posturesandmaneueres.h"
 
 namespace Ui {
     class MainForm;
@@ -39,6 +40,7 @@ class MainForm : public QMainWindow {
         CharacterModel m_Chars;
         CharDelegate m_Delegate;
         SelectDialog *_SelectDialog;
+        PosturesAndManeueres *m_pPosturesAndManueres;
 };
 
 #endif // MAINFORM_H

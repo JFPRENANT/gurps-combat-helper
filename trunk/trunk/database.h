@@ -67,6 +67,7 @@ class Database
     private:
         Database();
         ~Database();
+        void createStructure();
         QSqlDatabase m_Connection;
 };
 

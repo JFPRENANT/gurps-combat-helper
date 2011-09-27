@@ -180,6 +180,7 @@
      <string>File</string>
     </property>
     <addaction name="actionCharacter_List"/>
+    <addaction name="aPandM"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuCommands">
@@ -225,6 +226,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+M</string>
+   </property>
+  </action>
+  <action name="aPandM">
+   <property name="text">
+    <string>Postures and Maneures</string>
    </property>
   </action>
  </widget>
