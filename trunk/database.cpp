@@ -17,7 +17,8 @@ Database::Database()
     m_Connection.setDatabaseName("database.db");
     if (!m_Connection.open()) {
         qDebug() << "Can't open database";
-    }    
+    }
+    createStructure();
 }
 
 Database::~Database()
