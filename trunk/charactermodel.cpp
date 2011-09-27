@@ -38,24 +38,28 @@ void CharacterModel::addCharacter(Character *ch)
 
 void CharacterModel::changeHp(int row, int delta)
 {
+    if (m_Characters.isEmpty()) return;
     m_Characters.at(row)->changeHp(delta);
     emit dataChanged(index(row, HP), index(row, HP));
 }
 
 void CharacterModel::changeFp(int row, int delta)
 {
+    if (m_Characters.isEmpty()) return;
     m_Characters.at(row)->changeFp(delta);
     emit dataChanged(index(row, FP), index(row, FP));
 }
 
 void CharacterModel::selectPosture(int row, int id)
 {
+    if(m_Characters.isEmpty()) return;
     m_Characters.at(row)->setPosture(id);
     emit dataChanged(index(row, POSTURE), index(row, POSTURE));
 }
 
 void CharacterModel::selectManeuer(int row, int id)
 {
+    if (m_Characters.isEmpty()) return;
     m_Characters.at(row)->setManuer(id);
     emit dataChanged(index(row, MANEUER), index(row, MANEUER));
 }
