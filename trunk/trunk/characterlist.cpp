@@ -58,8 +58,8 @@ void CharacterList::onAddToTracking()
 {
     if (ui->treeWidget->currentItem() && ui->treeWidget->currentItem()->parent()) {
         m_CharsToTrack.append(ui->treeWidget->currentItem()->data(0, Qt::UserRole).toInt());
-    }
-    emit addToTracking(ui->treeWidget->currentItem()->data(0, Qt::UserRole).toInt());
+        emit addToTracking(ui->treeWidget->currentItem()->data(0, Qt::UserRole).toInt());
+    }    
 }
 
 void CharacterList::onAddCategory()
