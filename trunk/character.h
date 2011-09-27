@@ -30,6 +30,7 @@ class Character
         int move() const { return _move; }
         QString defences() const;
         QString effects() const;
+        QString info() const;
 
         void nextTurn();
 
@@ -51,6 +52,7 @@ class Character
         int _parry;
         int _block;
         QMap<QString, Effect> m_Effects;
+        QString _info;
 
 };
 

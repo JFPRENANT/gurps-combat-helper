@@ -18,6 +18,7 @@ MainForm::MainForm(QWidget *parent) :
     connect(ui->aStartBattle, SIGNAL(triggered()), &m_Chars, SLOT(startBattle()));
     connect(ui->aNextChar, SIGNAL(triggered()), &m_Chars, SLOT(nextChar()));
     connect(&m_Chars, SIGNAL(turnChanged(int)), ui->lcdTurn, SLOT(display(int)));
+    connect(&m_Chars, SIGNAL(infoChanged(QString)), ui->teCharacterInfo, SLOT(setHtml(QString)));
 }
 
 MainForm::~MainForm()
