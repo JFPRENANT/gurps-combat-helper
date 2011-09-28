@@ -19,6 +19,7 @@ class PosturesAndManeueres : public QDialog
         void on_btSave_clicked();
         void on_btAdd_clicked();
         void accept();
+        void on_btDel_clicked();
     signals:
         void dictionariesUpdated();
     private:

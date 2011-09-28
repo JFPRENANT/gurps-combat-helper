@@ -10,6 +10,7 @@ Character::Character()
 
 void Character::load(int id)
 {
+    _id = id;
     //load main characteristics
     QSqlQuery query = _db->execSql(QString("SELECT * FROM characters WHERE id = '%1'").arg(id));
     if (query.first()) {
@@ -27,6 +28,7 @@ void Character::load(int id)
         _parry = query.record().value("parry").toInt();
         _block = query.record().value("block").toInt();
         _info = query.record().value("notes").toString();
+        _bs = query.record().value("bs").toDouble();
     }
 }
 
@@ -75,4 +77,15 @@ void Character::nextTurn()
 QString Character::info() const
 {
     return _info;
+}
+
+void Character::save(QDataStream & stream)
+{
+    stream << _id;
+}
+
+void Character::load(QDataStream & stream)
+{
+    stream >> _id;
+    load(_id);
 }

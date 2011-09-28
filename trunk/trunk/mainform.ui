@@ -16,9 +16,9 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QGroupBox" name="groupBox">
+     <widget class="QGroupBox" name="gbBattleInfo">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -102,11 +102,11 @@
           <enum>Qt::Horizontal</enum>
          </property>
          <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
+          <enum>QSizePolicy::MinimumExpanding</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>423</width>
+           <width>50</width>
            <height>20</height>
           </size>
          </property>
@@ -140,6 +140,9 @@
         <bool>false</bool>
        </property>
        <attribute name="horizontalHeaderVisible">
+        <bool>true</bool>
+       </attribute>
+       <attribute name="horizontalHeaderStretchLastSection">
         <bool>true</bool>
        </attribute>
        <attribute name="verticalHeaderVisible">
@@ -181,6 +184,10 @@
     </property>
     <addaction name="actionCharacter_List"/>
     <addaction name="aPandM"/>
+    <addaction name="aSave"/>
+    <addaction name="aLoadParty"/>
+    <addaction name="aLoadEncounter"/>
+    <addaction name="aClearEncounter"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuCommands">
@@ -209,7 +216,7 @@
     <string>StartBattle</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Return</string>
+    <string>Return</string>
    </property>
   </action>
   <action name="aNextChar">
@@ -217,7 +224,7 @@
     <string>Next Character</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Space</string>
+    <string>Space</string>
    </property>
   </action>
   <action name="aSelectManeuer">
@@ -225,12 +232,42 @@
     <string>Selec Maneuer</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+M</string>
+    <string>M</string>
    </property>
   </action>
   <action name="aPandM">
    <property name="text">
     <string>Postures and Maneures</string>
+   </property>
+  </action>
+  <action name="aSaveAsParty">
+   <property name="text">
+    <string>Save current as party</string>
+   </property>
+  </action>
+  <action name="aSaveAsEcnounter">
+   <property name="text">
+    <string>Save current as encounter</string>
+   </property>
+  </action>
+  <action name="aLoadParty">
+   <property name="text">
+    <string>Load party</string>
+   </property>
+  </action>
+  <action name="aLoadEncounter">
+   <property name="text">
+    <string>Load encounter</string>
+   </property>
+  </action>
+  <action name="aSave">
+   <property name="text">
+    <string>Save battle to file</string>
+   </property>
+  </action>
+  <action name="aClearEncounter">
+   <property name="text">
+    <string>Clear Encounter</string>
    </property>
   </action>
  </widget>

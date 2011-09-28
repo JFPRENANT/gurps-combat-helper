@@ -47,3 +47,12 @@ void PosturesAndManeueres::accept()
     }
     QDialog::accept();
 }
+
+void PosturesAndManeueres::on_btDel_clicked()
+{
+    QTableView * view= ui->tabWidget->currentIndex() == 0 ?  ui->tvPostures : ui->tvManeuers;
+    if (view->selectionModel()->hasSelection()) {
+        view->model()->removeRow(view->selectionModel()->selectedRows().at(0).row());
+        view->hideRow(view->selectionModel()->selectedRows().at(0).row());
+    }
+}
