@@ -1,4 +1,6 @@
 #include <QList>
+#include <QFileDialog>
+#include <QToolBar>
 #include "mainform.h"
 #include "ui_mainform.h"
 
@@ -24,6 +26,13 @@ MainForm::MainForm(QWidget *parent) :
     connect(ui->aPandM, SIGNAL(triggered()), m_pPosturesAndManueres, SLOT(exec()));
 
     connect(m_pPosturesAndManueres, SIGNAL(dictionariesUpdated()), &m_Chars, SLOT(onDictionariesUpdate()));
+    connect(ui->aClearEncounter, SIGNAL(triggered()), &m_Chars, SLOT(clearEncounter()));
+    QToolBar *bar = new QToolBar;
+    bar->addAction(ui->aStartBattle);
+    bar->addAction(ui->aNextChar);
+    bar->addAction(ui->aSelectManeuer);
+    bar->setToolButtonStyle(Qt::ToolButtonFollowStyle);
+    ui->gbBattleInfo->layout()->addWidget(bar);
 }
 
 MainForm::~MainForm()
@@ -53,9 +62,7 @@ void MainForm::on_actionCharacter_List_triggered()
 
 void MainForm::on_CharacterList_addToTracking(int id)
 {
-    Character *ch = new Character;
-    ch->load(id);
-    m_Chars.addCharacter(ch);
+    m_Chars.addCharacter(id);
 }
 
 
@@ -90,3 +97,30 @@ void MainForm::on_aSelectManeuer_triggered()
     selectManeuer(m_Chars.currentChar());
 }
 
+
+
+void MainForm::on_aSave_triggered()
+{
+    QString filename = QFileDialog::getSaveFileName(this, "Save characters", "gch");
+    if (!filename.isNull()) {
+        m_Chars.saveToFile(filename);
+    }
+}
+
+void MainForm::on_aLoadParty_triggered()
+{
+    QString filename = QFileDialog::getOpenFileName(this, "Load party", "gch");
+    if (!filename.isNull()) {
+        m_Chars.loadParty(filename);
+    }
+    ui->tvChars->resizeColumnsToContents();
+}
+
+void MainForm::on_aLoadEncounter_triggered()
+{
+    QString filename = QFileDialog::getOpenFileName(this, "Load encounter", "gch");
+    if (!filename.isNull()) {
+        m_Chars.loadEncounter(filename);
+    }
+    ui->tvChars->resizeColumnsToContents();
+}

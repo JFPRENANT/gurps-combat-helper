@@ -4,6 +4,7 @@
 #include <QString>
 #include <QMap>
 #include <QSqlDatabase>
+#include <QDataStream>
 #include "database.h"
 #include "effect.h"
 
@@ -18,6 +19,7 @@ class Character
         int iq() const { return _iq; }
         int ht() const { return _ht; }
         int hp() const { return _total_hp; }
+        double bs() const { return _bs; }
         int current_hp() const { return _current_hp; }
         void changeHp(int delta);
         int fp() const { return _total_fp; }
@@ -34,8 +36,12 @@ class Character
 
         void nextTurn();
 
+        void save(QDataStream & stream);
+        void load(QDataStream & stream);
+
     private:
         Database *_db;
+        int _id;
         QString _name;
         int _st;
         int _dx;
@@ -53,7 +59,7 @@ class Character
         int _block;
         QMap<QString, Effect> m_Effects;
         QString _info;
-
+        double _bs;
 };
 
 #endif // CHARACTER_H

@@ -1,4 +1,5 @@
 #include <QDebug>
+#include <QFile>
 #include "charactermodel.h"
 #include "database.h"
 
@@ -33,7 +34,15 @@ void CharacterModel::addCharacter(Character *ch)
 {
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
     m_Characters.append(ch);
+    m_Encounter.append(ch);
     endInsertRows();
+}
+
+void CharacterModel::addCharacter(int nId)
+{
+    Character *ch = new Character;
+    ch->load(nId);
+    addCharacter(ch);
 }
 
 void CharacterModel::changeHp(int row, int delta)
@@ -122,6 +131,7 @@ QVariant CharacterModel::toolTipData(const QModelIndex & index) const
 {
     switch((Columns)index.column()) {
         case MANEUER: return m_Maneuers.value(m_Characters[index.row()]->maneuer()).tooltip();
+        case POSTURE: return m_Postures.value(m_Characters[index.row()]->posture()).toolitp();
     }
     return QVariant();
 }
@@ -151,6 +161,7 @@ void CharacterModel::startBattle()
     if (m_Characters.isEmpty()) {
         return;
     }
+    qSort(m_Characters.begin(), m_Characters.end(), charLessThan);
     _current_char = 0;
     _turn = 1;
     emit dataChanged(index(_current_char, 0), index(_current_char, COLUMN_COUNT - 1));
@@ -176,4 +187,101 @@ void CharacterModel::onDictionariesUpdate()
 {
     m_Maneuers = Database::inst()->maneuers();
     m_Postures = Database::inst()->postures();
+}
+
+bool CharacterModel::charLessThan(Character *c1, Character *c2)
+{
+    return c1->bs() > c2->bs();
+}
+
+QList<Character *> CharacterModel::chars() const
+{
+    return m_Characters;
+}
+
+void CharacterModel::clear()
+{
+    beginRemoveRows(QModelIndex(), 0, rowCount());
+    foreach (Character *ch, m_Characters) {
+        delete ch;
+    }
+    m_Characters.clear();
+    endRemoveRows();
+}
+
+void CharacterModel::saveToFile(const QString & filename)
+{
+    QFile f(filename);
+    if (f.open(QIODevice::WriteOnly)) {
+        QDataStream stream(&f);
+        stream << (quint32)m_Characters.size();
+        foreach(Character *ch, m_Characters) {
+            ch->save(stream);
+        }
+        f.close();
+    }
+
+}
+
+void CharacterModel::loadParty(const QString & filename)
+{
+    QFile f(filename);
+    if (f.open(QIODevice::ReadOnly)) {
+        m_Characters.clear();
+        if (!m_Party.isEmpty()) {
+            foreach (Character * ch, m_Party) {
+                delete ch;
+            }
+            m_Party.clear();
+        }
+        QDataStream stream(&f);
+        quint32 size;
+        stream >> size;
+        for (int i = 0; i < size; ++i) {
+            Character *ch = new Character;
+            ch->load(stream);
+            m_Party.append(ch);
+        }
+        f.close();
+        reArrangeRows();
+    }
+}
+
+void CharacterModel::loadEncounter(const QString & filename)
+{
+    QFile f(filename);
+    if (f.open(QIODevice::ReadOnly)) {
+        QDataStream stream(&f);
+        clearEncounter();
+        quint32 size;
+        stream >> size;
+        for(int i = 0; i < size; ++i) {
+            Character *ch = new Character;
+            ch->load(stream);
+            m_Encounter.append(ch);
+        }
+        f.close();
+        reArrangeRows();
+    }
+}
+
+void CharacterModel::clearEncounter()
+{
+    foreach(Character *ch, m_Encounter) {
+        delete ch;
+    }
+    m_Encounter.clear();
+    reArrangeRows();
+}
+
+void CharacterModel::reArrangeRows()
+{
+    beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
+    m_Characters.clear();
+    endRemoveRows();
+    m_Characters = m_Party + m_Encounter;
+    if (m_Characters.size()) {
+        beginInsertRows(QModelIndex(), 0, m_Characters.size() - 1);
+        endInsertRows();
+    }
 }

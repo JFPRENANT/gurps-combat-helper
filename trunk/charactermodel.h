@@ -42,7 +42,8 @@ class CharacterModel : public QAbstractTableModel
         bool setData(const QModelIndex &index, const QVariant &value, int role);
         QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 
-        void addCharacter(Character *ch);
+
+        void addCharacter(int nId);
 
         void changeHp(int row, int delta);
         void changeFp(int row, int delta);
@@ -50,11 +51,19 @@ class CharacterModel : public QAbstractTableModel
         void selectManeuer(int row, int id);
         int currentChar() const { return _current_char; }
 
+        QList<Character *> chars() const;
+        void clear();
+        void saveToFile(const QString & filename);
+        void loadParty(const QString & filename);
+        void loadEncounter(const QString & filename);
+
+
     public slots:
         void startBattle();
         void nextChar();
 
         void onDictionariesUpdate();
+        void clearEncounter();
 
     signals:
         void turnChanged(int nTurn);
@@ -64,8 +73,14 @@ class CharacterModel : public QAbstractTableModel
         QVariant displayData(const QModelIndex & index) const;
         QVariant toolTipData(const QModelIndex & index) const;
 
+        static bool charLessThan(Character *c1, Character *c2);
+        void addCharacter(Character *ch);
+        void reArrangeRows();
+
     private:
         QList<Character *> m_Characters;
+        QList<Character *> m_Party;
+        QList<Character *> m_Encounter;
         QMap<int, Maneuer> m_Maneuers;
         QMap<int, Posture> m_Postures;
         int _current_char;
