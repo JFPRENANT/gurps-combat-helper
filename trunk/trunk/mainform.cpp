@@ -32,6 +32,7 @@ MainForm::MainForm(QWidget *parent) :
     bar->addAction(ui->aNextChar);
     bar->addAction(ui->aSelectManeuer);
     bar->setToolButtonStyle(Qt::ToolButtonFollowStyle);
+//    bar->setMinimumHeight(35);
     ui->gbBattleInfo->layout()->addWidget(bar);
 }
 
