@@ -16,7 +16,7 @@ CharacterList::CharacterList(QWidget *parent) :
     connect(ui->btAddCharacter, SIGNAL(clicked()), this, SLOT(onAddCharacter()));
     connect(ui->btEditCharacter, SIGNAL(clicked()), this, SLOT(onEditCharacter()));
     connect(ui->btDelCharacter, SIGNAL(clicked()), this, SLOT(onDeleteCharacter()));
-    connect(ui->treeWidget, SIGNAL(itemActivated(QTreeWidgetItem*,int)), this, SLOT(onItemActivated(QTreeWidgetItem*,int)));
+    connect(ui->treeWidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(onItemActivated(QTreeWidgetItem*,int)));
     m_pEditor = new CharacterEditor(this);
 }
 
@@ -115,5 +115,5 @@ void CharacterList::onDeleteCharacter()
 
 void CharacterList::onItemActivated(QTreeWidgetItem *, int)
 {
-    onEditCharacter();
+    onAddToTracking();
 }
