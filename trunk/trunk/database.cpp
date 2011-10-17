@@ -30,7 +30,11 @@ void Database::createStructure()
 {
     QStringList queries;
     queries << "CREATE TABLE IF NOT EXISTS categories (id INTEGER PRIMARY KEY, name TEXT)"
-    << "CREATE TABLE IF NOT EXISTS characters (block NUMERIC, bm NUMERIC, bs NUMERIC, category_id NUMERIC, dodge NUMERIC, dr_arms NUMERIC, dr_face NUMERIC, dr_foots NUMERIC, dr_hands NUMERIC, dr_legs NUMERIC, dr_neck NUMERIC, dr_skull NUMERIC, dr_torso NUMERIC, dx NUMERIC, fp NUMERIC, hp NUMERIC, ht NUMERIC, id INTEGER PRIMARY KEY, iq NUMERIC, name TEXT, notes TEXT, parry NUMERIC, per NUMERIC, st NUMERIC, will NUMERIC)"
+    << "CREATE TABLE IF NOT EXISTS characters (id INTEGER PRIMARY KEY, block NUMERIC, bm NUMERIC, bs NUMERIC, "
+       "category_id NUMERIC, dodge NUMERIC, dr_arms NUMERIC, dr_face NUMERIC, dr_foots NUMERIC, "
+       "dr_hands NUMERIC, dr_legs NUMERIC, dr_neck NUMERIC, dr_skull NUMERIC, dr_torso NUMERIC, dx NUMERIC, "
+       "fp NUMERIC, hp NUMERIC, ht NUMERIC, iq NUMERIC, name TEXT, notes TEXT, "
+       "parry NUMERIC, per NUMERIC, st NUMERIC, will NUMERIC)"
     << "CREATE TABLE IF NOT EXISTS manevrous (id INTEGER PRIMARY KEY, name TEXT, tooltip TEXT)"
     << "CREATE TABLE IF NOT EXISTS postures (id INTEGER PRIMARY KEY, name TEXT, tooltip TEXT)";
     foreach (QString query, queries) {
