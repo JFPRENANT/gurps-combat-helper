@@ -1,8 +1,13 @@
+#include <QPushButton>
 #include <QVariant>
 #include <QVariantMap>
+#include <QUuid>
+#include <QFileDialog>
+#include <QFile>
 
 #include "charactereditor.h"
 #include "ui_charactereditor.h"
+#include "xmlparser.h"
 
 CharacterEditor::CharacterEditor(QWidget *parent) :
     QDialog(parent),
@@ -13,6 +18,13 @@ CharacterEditor::CharacterEditor(QWidget *parent) :
     connect(ui->sbDX, SIGNAL(valueChanged(int)), this, SLOT(onDxChange(int)));
     connect(ui->sbIQ, SIGNAL(valueChanged(int)), this, SLOT(onIqChange(int)));
     connect(ui->sbHT, SIGNAL(valueChanged(int)), this, SLOT(onHtChange(int)));
+
+    QPushButton *import = new QPushButton(tr("Import"));
+    connect(import, SIGNAL(clicked), SLOT(onImport()));
+    ui->buttonBox->addButton(import, QDialogButtonBox::ActionRole);
+    QPushButton *exp = new QPushButton(tr("Export"));
+    connect(exp, SIGNAL(clicked()), SLOT(onExport()));
+    ui->buttonBox->addButton(exp, QDialogButtonBox::ActionRole);
 }
 
 CharacterEditor::~CharacterEditor()
@@ -40,6 +52,7 @@ int CharacterEditor::newChar(int nCategoryId, int nTemplate)
     if (nTemplate) {
         loadCharacter(nTemplate);
     }
+    m_Uuid.clear();
     return exec();
 }
 
@@ -88,6 +101,8 @@ void CharacterEditor::saveRangeAttacks(int nCharId)
 
 void CharacterEditor::dataToEditors(const QVariantMap & data)
 {
+    m_Uuid = data["uuid"].toString();
+
     ui->sbST->setValue(data[ST].toInt());
     ui->sbDX->setValue(data[DX].toInt());
     ui->sbIQ->setValue(data[IQ].toInt());
@@ -153,6 +168,7 @@ void CharacterEditor::clearEditors()
 QVariantMap CharacterEditor::gatherData()
 {
     QVariantMap data;    
+    data["uuid"] = m_Uuid;
     //main characteristics
     data[ST] = ui->sbST->value();
     data[DX] = ui->sbDX->value();
@@ -180,6 +196,107 @@ QVariantMap CharacterEditor::gatherData()
     data[NOTES] = ui->teNotes->toHtml();
     data[NAME] = ui->leName->text();    
     return data;
+}
+
+Stanza CharacterEditor::gatherStanza()
+{
+    Stanza res;
+    res.tag().setName("character");
+
+    res.tag().addAttribute("uuid", m_Uuid);
+
+    //main attributes
+    res.addChild(XmlTag(ST, ui->sbST->value()));
+    res.addChild(XmlTag(DX, ui->sbDX->value()));
+    res.addChild(XmlTag(IQ, ui->sbIQ->value()));
+    res.addChild(XmlTag(HT, ui->sbHT->value()));
+    //secondary attributes
+    res.addChild(XmlTag(WILL, ui->sbWill->value()));
+    res.addChild(XmlTag(PER, ui->sbPer->value()));
+    res.addChild(XmlTag(BS, ui->sbBS->value()));
+    res.addChild(XmlTag(BM, ui->sbBM->value()));
+    res.addChild(XmlTag(HP, ui->sbHP->value()));
+    res.addChild(XmlTag(FP, ui->sbFP->value()));
+    res.addChild(XmlTag(DODGE, ui->sbDodge->value()));
+    res.addChild(XmlTag(PARRY, ui->sbParry->value()));
+    res.addChild(XmlTag(BLOCK, ui->sbBlock->value()));
+    //defences
+    res.addChild(XmlTag(DR_SKULL, ui->sbDrSkull->value()));
+    res.addChild(XmlTag(DR_FACE, ui->sbDrFace->value()));
+    res.addChild(XmlTag(DR_NECK, ui->sbDrNeck->value()));
+    res.addChild(XmlTag(DR_TORSO, ui->sbDrTorso->value()));
+    res.addChild(XmlTag(DR_ARMS, ui->sbDrArms->value()));
+    res.addChild(XmlTag(DR_HANDS, ui->sbDrHands->value()));
+    res.addChild(XmlTag(DR_LEGS, ui->sbDrLegs->value()));
+    res.addChild(XmlTag(DR_FOOTS, ui->sbDrFoots->value()));
+
+    res.addChild(XmlTag(NOTES, ui->teNotes->toHtml()));
+    res.addChild(XmlTag(NAME, ui->leName->text()));
+    return res;
+}
+
+void CharacterEditor::setStanza(const Stanza & stanza)
+{
+    m_Uuid = stanza.tag().attrs().attr("uuid").value();
+
+    ui->sbST->setValue(stanza.child(ST).tag().text().toInt());
+    ui->sbDX->setValue(stanza.child(DX).tag().text().toInt());
+    ui->sbIQ->setValue(stanza.child(IQ).tag().text().toInt());
+    ui->sbHT->setValue(stanza.child(HT).tag().text().toInt());
+
+    ui->sbWill->setValue(stanza.child(WILL).tag().text().toInt());
+    ui->sbPer->setValue(stanza.child(PER).tag().text().toInt());
+    ui->sbBS->setValue(stanza.child(BS).tag().text().toDouble());
+    ui->sbBM->setValue(stanza.child(BM).tag().text().toInt());
+    ui->sbHP->setValue(stanza.child(HP).tag().text().toInt());
+    ui->sbFP->setValue(stanza.child(FP).tag().text().toInt());
+    ui->sbDodge->setValue(stanza.child(DODGE).tag().text().toInt());
+    ui->sbParry->setValue(stanza.child(PARRY).tag().text().toInt());
+    ui->sbBlock->setValue(stanza.child(BLOCK).tag().text().toInt());
+
+    ui->sbDrSkull->setValue(stanza.child(DR_SKULL).tag().text().toInt());
+    ui->sbDrFace->setValue(stanza.child(DR_FACE).tag().text().toInt());
+    ui->sbDrNeck->setValue(stanza.child(DR_NECK).tag().text().toInt());
+    ui->sbDrTorso->setValue(stanza.child(DR_TORSO).tag().text().toInt());
+    ui->sbDrArms->setValue(stanza.child(DR_ARMS).tag().text().toInt());
+    ui->sbDrHands->setValue(stanza.child(DR_HANDS).tag().text().toInt());
+    ui->sbDrLegs->setValue(stanza.child(DR_LEGS).tag().text().toInt());
+    ui->sbDrFoots->setValue(stanza.child(DR_FOOTS).tag().text().toInt());
+
+    ui->teNotes->setHtml(stanza.child(NOTES).tag().text());
+    ui->leName->setText(stanza.child(NAME).tag().text());
+
+    m_nWillChange = ui->sbWill->value() - ui->sbIQ->value();
+    m_nPerChange  = ui->sbPer->value() - ui->sbIQ->value();
+    m_nHPChange = ui->sbHP->value() - ui->sbST->value();
+    m_nFPChange = ui->sbFP->value() - ui->sbHT->value();
+    m_BsChange = ui->sbBS->value() - (double)(ui->sbDX->value() + ui->sbHT->value()) / 4.0;
+    m_BMChange = ui->sbBM->value() - (int)ui->sbBS->value();
+    m_DodgeChange = ui->sbDodge->value() - (int)ui->sbBS->value();
+}
+
+void CharacterEditor::onImport()
+{
+    QString filename = QFileDialog::getOpenFileName(this, tr("Select character to import"), "*.xml");
+    if (!filename.isNull()) {
+        QFile file(filename);
+        if (file.open(QIODevice::ReadOnly)) {
+            setStanza(XmlParser::parse(&file));
+        }
+    }
+}
+
+void CharacterEditor::onExport()
+{
+    QString filename = QFileDialog::getSaveFileName(this, tr("Select file to export"), "*.xml");
+    if (!filename.isNull()) {
+        QFile file(filename);
+        if (file.open(QIODevice::WriteOnly)) {
+            QXmlStreamWriter writer(&file);
+            writer.setAutoFormatting(true);
+            gatherStanza().toXml(&writer);
+        }
+    }
 }
 
 void CharacterEditor::onStChange(int nNew)

@@ -29,6 +29,9 @@ class CharacterList : public QDialog {
 
         void onItemActivated(QTreeWidgetItem *, int);
 
+        void on_btImportCategory_clicked();
+        void on_btExportCategory_clicked();
+
     signals:
         void addToTracking(int id);
     private:

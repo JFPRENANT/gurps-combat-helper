@@ -5,6 +5,7 @@
 #include <QMap>
 #include <QSqlDatabase>
 #include <QDataStream>
+#include <QXmlStreamWriter>
 #include "database.h"
 #include "effect.h"
 
@@ -38,6 +39,9 @@ class Character
 
         void save(QDataStream & stream);
         void load(QDataStream & stream);
+
+        void dumpToXml(QXmlStreamWriter * writer);
+
 
     private:
         Database *_db;
