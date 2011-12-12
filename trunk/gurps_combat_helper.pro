@@ -19,7 +19,12 @@ SOURCES += main.cpp \
     selectmodel.cpp \
     posture.cpp \
     effect.cpp \
-    posturesandmaneueres.cpp
+    posturesandmaneueres.cpp \
+    xmltag.cpp \
+    xmlattribute.cpp \
+    stanza.cpp \
+    xmlparser.cpp
+
 HEADERS += mainform.h \
     charactereditor.h \
     database.h \
@@ -35,7 +40,12 @@ HEADERS += mainform.h \
     selectmodel.h \
     posture.h \
     effect.h \
-    posturesandmaneueres.h
+    posturesandmaneueres.h \
+    xmltag.h \
+    xmlattribute.h \
+    stanza.h \
+    xmlparser.h
+
 FORMS += mainform.ui \
     charactereditor.ui \
     characterlist.ui \

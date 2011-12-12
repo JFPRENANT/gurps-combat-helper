@@ -1,7 +1,11 @@
+#include <QFileDialog>
+#include <QXmlStreamWriter>
+#include <QFile>
 #include "QMessageBox"
 #include "characterlist.h"
 #include "ui_characterlist.h"
 #include "database.h"
+#include "xmlparser.h"
 
 CharacterList::CharacterList(QWidget *parent) :
     QDialog(parent),
@@ -116,4 +120,48 @@ void CharacterList::onDeleteCharacter()
 void CharacterList::onItemActivated(QTreeWidgetItem *, int)
 {
     onAddToTracking();
+}
+
+void CharacterList::on_btImportCategory_clicked()
+{
+    QString filename = QFileDialog::getOpenFileName(this, "Select file with collection", QString(), "Xml files (*.xml)");
+    if (!filename.isEmpty()) {
+        QFile file(filename);
+        if (file.open(QIODevice::ReadOnly)) {
+            Stanza collection = XmlParser::parse(&file);
+            int category = Database::inst()->existingCategoryId(collection.tag().attrs().attr("name").value());
+            m_pEditor->setCategoryId(category);
+            foreach (Stanza st, collection.childs()) {
+                m_pEditor->setStanza(st);
+                m_pEditor->saveCharacter();
+            }
+        }
+    }
+    fillTree();
+}
+
+void CharacterList::on_btExportCategory_clicked()
+{
+    QTreeWidgetItem *item = ui->treeWidget->currentItem();
+    if (item) {
+        if (item->parent()) {
+            item = item->parent();
+        }
+        QString filename = QFileDialog::getSaveFileName(this, "Select file for category", QString(), "Xml files (*.xml)");
+        if (!filename.isEmpty()) {
+            QFile file(filename);
+            if (file.open(QIODevice::WriteOnly)) {
+                QXmlStreamWriter writer(&file);
+                writer.setAutoFormatting(true);
+                writer.writeStartElement("charactercollection");
+                writer.writeAttribute("name", item->text(0));
+                for (int i = 0; i < item->childCount(); ++i) {
+                    QTreeWidgetItem *child = item->child(i);
+                    m_pEditor->loadCharacter(child->data(0, Qt::UserRole).toInt());
+                    m_pEditor->gatherStanza().toXml(&writer);
+                }
+                writer.writeEndElement();
+            }
+        }
+    }
 }

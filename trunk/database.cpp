@@ -1,4 +1,5 @@
 #include <QDebug>
+#include <QUuid>
 #include <QSqlQuery>
 #include <QSqlRecord>
 #include <QSqlError>
@@ -30,7 +31,7 @@ void Database::createStructure()
 {
     QStringList queries;
     queries << "CREATE TABLE IF NOT EXISTS categories (id INTEGER PRIMARY KEY, name TEXT)"
-    << "CREATE TABLE IF NOT EXISTS characters (id INTEGER PRIMARY KEY, block NUMERIC, bm NUMERIC, bs NUMERIC, "
+    << "CREATE TABLE IF NOT EXISTS characters (id INTEGER PRIMARY KEY, uuid TEXT, block NUMERIC, bm NUMERIC, bs NUMERIC, "
        "category_id NUMERIC, dodge NUMERIC, dr_arms NUMERIC, dr_face NUMERIC, dr_foots NUMERIC, "
        "dr_hands NUMERIC, dr_legs NUMERIC, dr_neck NUMERIC, dr_skull NUMERIC, dr_torso NUMERIC, dx NUMERIC, "
        "fp NUMERIC, hp NUMERIC, ht NUMERIC, iq NUMERIC, name TEXT, notes TEXT, "
@@ -94,6 +95,16 @@ int Database::createCategory(const QString & name)
     return execSql(QString("INSERT INTO categories (name) VALUES ('%1')").arg(name)).lastInsertId().toInt();
 }
 
+int Database::existingCategoryId(const QString & name)
+{
+    QSqlQuery query = execSql(QString("SELECT id FROM categories WHERE name='%1'").arg(name));
+    if (query.next()) {
+        return query.value(0).toInt();
+    } else {
+        return createCategory(name);
+    }
+}
+
 void Database::deleteCategory(int nId)
 {
     execSql(QString("DELETE FROM categories WHERE id = '%1'").arg(nId));
@@ -111,17 +122,18 @@ QVariantMap Database::getCharacter(int nId)
     return res;
 }
 
-int Database::saveCharacter(const QVariantMap & character)
+void Database::saveCharacter(const QVariantMap & character)
 {
     QString sql;    
     bool bSet;    
     QVariantMap data(character);
-    int nCharId = data[ID].toInt();
-    if (nCharId == 0) { // new character
+    QString charId = data["uuid"].toString();
+    if (charId.isEmpty()) { // new character
+        data["uuid"] = QUuid::createUuid().toString();
         sql = "INSERT INTO characters (`%1`) VALUES ('%2')";
         bSet = false;
     } else {
-        sql = QString("UPDATE characters SET %2 WHERE id = '%1'").arg(nCharId);
+        sql = QString("UPDATE characters SET %2 WHERE uuid = '%1'").arg(charId);
         bSet = true;
     }
     data.remove(ID);
@@ -140,8 +152,8 @@ int Database::saveCharacter(const QVariantMap & character)
         sql = sql.arg(names.join("`,`"), values.join("','"));
     }
     QSqlQuery q = execSql(sql);
-    if (!nCharId) nCharId = q.lastInsertId().toInt();
-    return nCharId;
+//    if (!nCharId) nCharId = q.lastInsertId().toInt();
+//    return nCharId;
 }
 
 void Database::deleteCharacter(int nId)

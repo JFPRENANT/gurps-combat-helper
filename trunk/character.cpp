@@ -89,3 +89,7 @@ void Character::load(QDataStream & stream)
     stream >> _id;
     load(_id);
 }
+
+void Character::dumpToXml(QXmlStreamWriter * writer)
+{
+}

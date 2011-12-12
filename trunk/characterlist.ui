@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>596</width>
-    <height>306</height>
+    <width>477</width>
+    <height>507</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,9 +16,6 @@
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
     <widget class="QTreeWidget" name="treeWidget">
-     <attribute name="headerVisible">
-      <bool>false</bool>
-     </attribute>
      <attribute name="headerVisible">
       <bool>false</bool>
      </attribute>
@@ -70,6 +67,20 @@
       <widget class="QPushButton" name="btDelCharacter">
        <property name="text">
         <string>Delete Character</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btImportCategory">
+       <property name="text">
+        <string>Import Category</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btExportCategory">
+       <property name="text">
+        <string>Export Category</string>
        </property>
       </widget>
      </item>

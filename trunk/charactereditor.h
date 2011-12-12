@@ -3,8 +3,10 @@
 
 #include <QDialog>
 #include <QStringList>
+#include <QSqlRecord>
 
 #include "database.h"
+#include "stanza.h"
 
 namespace Ui {
     class CharacterEditor;
@@ -20,16 +22,25 @@ class CharacterEditor : public QDialog {
         int newChar(int nCategoryId, int nTemplate = 0);
         int editChar(int nCharId);
         void saveCharacter();
+        void loadCharacter(int nCharId);
+        void setCategoryId(int id) { m_nCategoryId = id; }
+        Stanza gatherStanza();
+        void setStanza(const Stanza & stanza);
     protected:
         void changeEvent(QEvent *e);
-        void loadCharacter(int nCharId);
+
         void loadMeleeAttacks(int nCharId);
         void loadRangeAttacks(int nCharId);
 
         void saveMeeleeAttacks(int nCharId);
         void saveRangeAttacks(int nCharId);
+
+
+
         QVariantMap gatherData();
         void dataToEditors(const QVariantMap & data);
+
+
 
         void clearEditors();
 
@@ -48,6 +59,9 @@ class CharacterEditor : public QDialog {
         void on_sbBM_valueChanged(int nNew);
         void on_sbDodge_valueChanged(int nNew);
 
+        void onImport();
+        void onExport();
+
     private:
         Ui::CharacterEditor *ui;
         Database *db;
@@ -62,6 +76,8 @@ class CharacterEditor : public QDialog {
 
         int m_BMChange;
         int m_DodgeChange;
+
+        QString m_Uuid;
 };
 
 #endif // CHARACTEREDITOR_H

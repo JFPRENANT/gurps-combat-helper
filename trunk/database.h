@@ -48,9 +48,10 @@ class Database
         IdNameList<IdName> getCategories();
         IdNameList<IdName> getCharacters(int nCategoryId);
         int createCategory(const QString & name);
+        int existingCategoryId(const QString & name);
         void deleteCategory(int nId);
         QVariantMap getCharacter(int nId);
-        int saveCharacter(const QVariantMap & character);
+        void saveCharacter(const QVariantMap & character);
         void deleteCharacter(int nId);
         TrackingCharacter getCharForTracking(int nId);
 
