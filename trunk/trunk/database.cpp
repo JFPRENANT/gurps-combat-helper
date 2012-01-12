@@ -37,7 +37,8 @@ void Database::createStructure()
        "fp NUMERIC, hp NUMERIC, ht NUMERIC, iq NUMERIC, name TEXT, notes TEXT, "
        "parry NUMERIC, per NUMERIC, st NUMERIC, will NUMERIC)"
     << "CREATE TABLE IF NOT EXISTS manevrous (id INTEGER PRIMARY KEY, name TEXT, tooltip TEXT)"
-    << "CREATE TABLE IF NOT EXISTS postures (id INTEGER PRIMARY KEY, name TEXT, tooltip TEXT)";
+    << "CREATE TABLE IF NOT EXISTS postures (id INTEGER PRIMARY KEY, name TEXT, tooltip TEXT)"
+    << "CREATE TABLE IF NOT EXISTS manual_effects (id INTEGER PRIMARY KEY, name TEXT)";
     foreach (QString query, queries) {
         execSql(query);
     }
@@ -203,4 +204,14 @@ void Database::setupSelectModel(SelectModel *model, const QString & table, const
     while(query.next()) {
         model->add(qMakePair(query.record().value(IdField).toInt(), query.record().value(NameField).toString()));
     }
+}
+
+QList<QPair<int, QString> > Database::getSelectSource(const QString & table, const QString & idField, const QString & nameField)
+{
+    QSqlQuery query = execSql(QString("SELECT `%1`, `%2` FROM `%3`").arg(idField, nameField, table));
+    QList<QPair<int, QString> > res;
+    while(query.next()) {
+        res.append(qMakePair(query.value(0).toInt(), query.value(1).toString()));
+    }
+    return res;
 }

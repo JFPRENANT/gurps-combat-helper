@@ -14,6 +14,9 @@ class SelectModel : public QAbstractListModel
         int rowCount(const QModelIndex &parent) const;
         int rowCount() const;
         QVariant data(const QModelIndex &index, int role) const;
+        QPair<int, QString> element(int row);
+        bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
+        QList<QPair<int, QString> > allData() const { return m_Data; }
         void add(const QPair<int, QString> piece);
         void clear();
     private:

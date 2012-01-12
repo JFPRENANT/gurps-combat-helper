@@ -35,6 +35,12 @@ class Character
         QString effects() const;
         QString info() const;
 
+        QList<QPair<int, QString> > currentManualEffects() const;
+        QSet<int> currentManualEffectsIds() const;
+        void setManualEffects(const QList<QPair<int, QString> > & effects) { _ManualEffects = effects; }
+        void addManualEffect(int id, QString description);
+        void clearManualEffects();
+
         void nextTurn();
 
         void save(QDataStream & stream);
@@ -62,6 +68,7 @@ class Character
         int _parry;
         int _block;
         QMap<QString, Effect> m_Effects;
+        QList<QPair<int, QString> > _ManualEffects;
         QString _info;
         double _bs;
 };

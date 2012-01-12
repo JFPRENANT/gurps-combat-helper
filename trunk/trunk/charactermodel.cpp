@@ -2,6 +2,7 @@
 #include <QFile>
 #include "charactermodel.h"
 #include "database.h"
+#include "manualeffectsselector.h"
 
 CharacterModel::CharacterModel(QObject *parent) :
     QAbstractTableModel(parent), _current_char(-1)
@@ -284,4 +285,14 @@ void CharacterModel::reArrangeRows()
         beginInsertRows(QModelIndex(), 0, m_Characters.size() - 1);
         endInsertRows();
     }
+}
+
+void CharacterModel::changeManualEffects(int row)
+{
+    if (row < 0 || row >= m_Characters.size()) return;
+    ManualEffectsSelector selector;
+    selector.init(m_Characters[row]);
+    selector.exec();
+    selector.setupCharacter(m_Characters[row]);
+    emit dataChanged(index(row, EFFECTS), index(row, EFFECTS));
 }

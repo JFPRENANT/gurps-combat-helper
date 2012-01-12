@@ -39,3 +39,21 @@ void SelectModel::clear()
         endRemoveRows();
     }
 }
+
+QPair<int, QString> SelectModel::element(int row)
+{
+    if (row > -1 && row < m_Data.size()) {
+        return m_Data[row];
+    } else {
+        return QPair<int, QString>();
+    }
+}
+
+bool SelectModel::removeRows(int row, int count, const QModelIndex &parent)
+{
+    emit beginRemoveRows(parent, row, count);
+    for (int i = 0; i < count; ++i) {
+        m_Data.removeAt(row);
+    }
+    emit endRemoveRows();
+}

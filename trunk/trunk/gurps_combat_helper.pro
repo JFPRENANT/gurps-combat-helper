@@ -23,7 +23,9 @@ SOURCES += main.cpp \
     xmltag.cpp \
     xmlattribute.cpp \
     stanza.cpp \
-    xmlparser.cpp
+    xmlparser.cpp \
+    manualeffectseditor.cpp \
+    manualeffectsselector.cpp
 
 HEADERS += mainform.h \
     charactereditor.h \
@@ -44,11 +46,15 @@ HEADERS += mainform.h \
     xmltag.h \
     xmlattribute.h \
     stanza.h \
-    xmlparser.h
+    xmlparser.h \
+    manualeffectseditor.h \
+    manualeffectsselector.h
 
 FORMS += mainform.ui \
     charactereditor.ui \
     characterlist.ui \
     categorynamedialog.ui \
     selectdialog.ui \
-    posturesandmaneueres.ui
+    posturesandmaneueres.ui \
+    manualeffectseditor.ui \
+    manualeffectsselector.ui

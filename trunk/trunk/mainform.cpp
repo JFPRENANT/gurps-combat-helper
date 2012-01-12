@@ -18,19 +18,24 @@ MainForm::MainForm(QWidget *parent) :
     ui->tvChars->resizeRowsToContents();
 
     m_pPosturesAndManueres = new PosturesAndManeueres(this);
+    m_ManualEffectsEditor = new ManualEffectsEditor(this);
 
     connect(ui->aStartBattle, SIGNAL(triggered()), &m_Chars, SLOT(startBattle()));
     connect(ui->aNextChar, SIGNAL(triggered()), &m_Chars, SLOT(nextChar()));
     connect(&m_Chars, SIGNAL(turnChanged(int)), ui->lcdTurn, SLOT(display(int)));
     connect(&m_Chars, SIGNAL(infoChanged(QString)), ui->teCharacterInfo, SLOT(setHtml(QString)));
     connect(ui->aPandM, SIGNAL(triggered()), m_pPosturesAndManueres, SLOT(exec()));
+    connect(ui->actionEffects, SIGNAL(triggered()), m_ManualEffectsEditor, SLOT(editEffects()));
 
     connect(m_pPosturesAndManueres, SIGNAL(dictionariesUpdated()), &m_Chars, SLOT(onDictionariesUpdate()));
     connect(ui->aClearEncounter, SIGNAL(triggered()), &m_Chars, SLOT(clearEncounter()));
     QToolBar *bar = new QToolBar;
-    bar->addAction(ui->aStartBattle);
-    bar->addAction(ui->aNextChar);
-    bar->addAction(ui->aSelectManeuer);
+    foreach(QAction *acc, ui->menuCommands->actions()) {
+        bar->addAction(acc);
+    }
+//    bar->addAction(ui->aStartBattle);
+//    bar->addAction(ui->aNextChar);
+//    bar->addAction(ui->aSelectManeuer);
     bar->setToolButtonStyle(Qt::ToolButtonFollowStyle);
 //    bar->setMinimumHeight(35);
     ui->gbBattleInfo->layout()->addWidget(bar);
@@ -72,6 +77,7 @@ void MainForm::on_tvChars_clicked(const QModelIndex & index)
     switch(index.column()) {
         case CharacterModel::MANEUER: return selectManeuer(index.row());
         case CharacterModel::POSTURE: return selectPosture(index.row());
+        case CharacterModel::EFFECTS: m_Chars.changeManualEffects(index.row());
     }
 }
 
@@ -96,6 +102,11 @@ void MainForm::selectPosture(int row)
 void MainForm::on_aSelectManeuer_triggered()
 {
     selectManeuer(m_Chars.currentChar());
+}
+
+void MainForm::on_aSelectEffects_triggered()
+{
+    m_Chars.changeManualEffects(m_Chars.currentChar());
 }
 
 
