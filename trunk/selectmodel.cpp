@@ -56,4 +56,5 @@ bool SelectModel::removeRows(int row, int count, const QModelIndex &parent)
         m_Data.removeAt(row);
     }
     emit endRemoveRows();
+    return true;
 }
