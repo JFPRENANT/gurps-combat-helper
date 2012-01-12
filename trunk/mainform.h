@@ -8,6 +8,7 @@
 #include "chardelegate.h"
 #include "selectdialog.h"
 #include "posturesandmaneueres.h"
+#include "manualeffectseditor.h"
 
 namespace Ui {
     class MainForm;
@@ -28,6 +29,7 @@ class MainForm : public QMainWindow {
 
         void on_tvChars_clicked(const QModelIndex & index);
         void on_aSelectManeuer_triggered();
+        void on_aSelectEffects_triggered();
 
         void on_aSave_triggered();
         void on_aLoadParty_triggered();
@@ -45,6 +47,7 @@ class MainForm : public QMainWindow {
         CharDelegate m_Delegate;
         SelectDialog *_SelectDialog;
         PosturesAndManeueres *m_pPosturesAndManueres;
+        ManualEffectsEditor *m_ManualEffectsEditor;
 };
 
 #endif // MAINFORM_H

@@ -175,7 +175,7 @@
      <x>0</x>
      <y>0</y>
      <width>702</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -184,6 +184,7 @@
     </property>
     <addaction name="actionCharacter_List"/>
     <addaction name="aPandM"/>
+    <addaction name="actionEffects"/>
     <addaction name="aSave"/>
     <addaction name="aLoadParty"/>
     <addaction name="aLoadEncounter"/>
@@ -197,6 +198,7 @@
     <addaction name="aStartBattle"/>
     <addaction name="aNextChar"/>
     <addaction name="aSelectManeuer"/>
+    <addaction name="aSelectEffects"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuCommands"/>
@@ -268,6 +270,22 @@
   <action name="aClearEncounter">
    <property name="text">
     <string>Clear Encounter</string>
+   </property>
+  </action>
+  <action name="actionEffects">
+   <property name="text">
+    <string>Effects</string>
+   </property>
+  </action>
+  <action name="aSelectEffects">
+   <property name="text">
+    <string>Select Effects</string>
+   </property>
+   <property name="toolTip">
+    <string>Select Manual effects for curent character in battle</string>
+   </property>
+   <property name="shortcut">
+    <string>E</string>
    </property>
   </action>
  </widget>

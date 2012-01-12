@@ -62,6 +62,9 @@ class Database
 
         void setupSelectModel(SelectModel *model, const QString & table,
                               const QString & IdField = "id", const QString &  NameField = "name");
+        QList<QPair<int, QString> > getSelectSource(const QString & table,
+                                                    const QString & idField = "id",
+                                                    const QString & nameField = "name");
 
     protected:
         QString escape(const QString & str);        

@@ -46,6 +46,10 @@ QString Character::effects() const
     foreach (Effect effect, m_Effects.values()) {
         eff += QString("%1(%2); ").arg(effect.keyword()).arg(effect.modifier());
     }
+    QPair<int, QString> manualEffect;
+    foreach(manualEffect, _ManualEffects) {
+        eff += manualEffect.second + "; ";
+    }
     return eff;
 }
 
@@ -92,4 +96,29 @@ void Character::load(QDataStream & stream)
 
 void Character::dumpToXml(QXmlStreamWriter * writer)
 {
+}
+
+QList<QPair<int, QString> > Character::currentManualEffects() const
+{
+    return _ManualEffects;
+}
+
+QSet<int> Character::currentManualEffectsIds() const
+{
+    QSet<int> res;
+    QPair<int, QString> eff;
+    foreach(eff, _ManualEffects) {
+        res.insert(eff.first);
+    }
+    return res;
+}
+
+void Character::addManualEffect(int id, QString description)
+{
+    _ManualEffects.append(qMakePair(id, description));
+}
+
+void Character::clearManualEffects()
+{
+    _ManualEffects.clear();
 }

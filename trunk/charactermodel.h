@@ -49,6 +49,7 @@ class CharacterModel : public QAbstractTableModel
         void changeFp(int row, int delta);
         void selectPosture(int row, int id);
         void selectManeuer(int row, int id);
+        void changeManualEffects(int row);
         int currentChar() const { return _current_char; }
 
         QList<Character *> chars() const;
