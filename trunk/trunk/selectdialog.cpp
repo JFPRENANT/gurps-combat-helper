@@ -38,8 +38,11 @@ void SelectDialog::on_tvData_clicked(const QModelIndex & index)
 void SelectDialog::on_leIndex_editingFinished()
 {
     if (!ui->leIndex->text().isEmpty()) {
+        int enteredNumber = ui->leIndex->text().toInt() - 1;
 //        _lastValueSelected = ui->leIndex->text().toInt();
-        _lastValueSelected = _model->index(ui->leIndex->text().toInt()).data(SelectModel::IdRole).toInt();
-        accept();
+        if (enteredNumber > 0 && enteredNumber < _model->rowCount()) {
+            _lastValueSelected = _model->index(enteredNumber).data(SelectModel::IdRole).toInt();
+            accept();
+        }
     }
 }
