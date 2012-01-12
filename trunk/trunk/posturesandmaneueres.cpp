@@ -1,4 +1,6 @@
+#include <QDebug>
 #include <QMessageBox>
+#include <QSqlError>
 #include "posturesandmaneueres.h"
 #include "ui_posturesandmaneueres.h"
 
@@ -8,14 +10,16 @@ PosturesAndManeueres::PosturesAndManeueres(QWidget *parent) :
 {
     ui->setupUi(this);
     m_PosturesModel.setTable("postures");
-    ui->tvPostures->setModel(&m_PosturesModel);
-    m_PosturesModel.select();
+    ui->tvPostures->setModel(&m_PosturesModel);    
+    m_PosturesModel.select();    
     m_PosturesModel.setEditStrategy(QSqlTableModel::OnManualSubmit);
+    ui->tvPostures->setColumnHidden(0, true);
     ui->tvPostures->resizeColumnsToContents();
     m_ManeueresModel.setTable("manevrous");
     m_ManeueresModel.setEditStrategy(QSqlTableModel::OnManualSubmit);
     ui->tvManeuers->setModel(&m_ManeueresModel);
     m_ManeueresModel.select();
+    ui->tvManeuers->setColumnHidden(0, true);
     ui->tvManeuers->resizeColumnsToContents();
 }
 
@@ -28,6 +32,12 @@ void PosturesAndManeueres::on_btSave_clicked()
 {
     m_PosturesModel.submitAll();
     m_ManeueresModel.submitAll();
+    if (m_PosturesModel.lastError().isValid()) {
+        qDebug() << m_PosturesModel.lastError().text();
+    }
+    if (m_ManeueresModel.lastError().isValid()) {
+        qDebug() << m_ManeueresModel.lastError().text();
+    }
     emit dictionariesUpdated();
 }
 
