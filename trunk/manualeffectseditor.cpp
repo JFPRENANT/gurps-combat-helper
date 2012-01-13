@@ -31,9 +31,9 @@ void ManualEffectsEditor::on_btAdd_clicked()
 
 void ManualEffectsEditor::on_btDel_clicked()
 {
-    if (!ui->tvEffects->selectionModel()->hasSelection()) {
-        _Model.removeRow(ui->tvEffects->selectionModel()->selectedRows().at(0).row());
+    if (ui->tvEffects->selectionModel()->hasSelection()) {
         ui->tvEffects->hideRow(ui->tvEffects->selectionModel()->selectedRows().at(0).row());
+        _Model.removeRow(ui->tvEffects->selectionModel()->selectedRows().at(0).row());
     }
 }
 
