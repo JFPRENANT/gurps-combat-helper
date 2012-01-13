@@ -51,7 +51,7 @@ QPair<int, QString> SelectModel::element(int row)
 
 bool SelectModel::removeRows(int row, int count, const QModelIndex &parent)
 {
-    emit beginRemoveRows(parent, row, count);
+    emit beginRemoveRows(parent, row, row + count - 1);
     for (int i = 0; i < count; ++i) {
         m_Data.removeAt(row);
     }
