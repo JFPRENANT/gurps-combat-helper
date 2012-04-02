@@ -6,6 +6,7 @@
 Character::Character()
 {
     _db = Database::inst();
+    _isDead = false;
 }
 
 void Character::load(int id)

@@ -136,3 +136,8 @@ void MainForm::on_aLoadEncounter_triggered()
     }
     ui->tvChars->resizeColumnsToContents();
 }
+
+void MainForm::on_aCurrent_Dead_triggered()
+{
+    m_Chars.setCharacterDead(m_Chars.currentChar(), true);
+}

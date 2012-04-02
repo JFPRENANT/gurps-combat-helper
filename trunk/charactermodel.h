@@ -15,6 +15,12 @@ class CharacterModel : public QAbstractTableModel
     static const int COLUMN_COUNT = 12;
     static const int CurrentRole = Qt::UserRole;
 
+    enum {
+        CHAR_IS_CURRENT,
+        CHAR_NOT_CURRENT,
+        CHAR_IS_DEAD
+    };
+
     enum Columns {
         NAME,
         HP,
@@ -51,6 +57,7 @@ class CharacterModel : public QAbstractTableModel
         void selectManeuer(int row, int id);
         void changeManualEffects(int row);
         int currentChar() const { return _current_char; }
+        void setCharacterDead(int row, bool dead);
 
         QList<Character *> chars() const;
         void clear();

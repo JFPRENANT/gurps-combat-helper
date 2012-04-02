@@ -79,7 +79,10 @@ QVariant CharacterModel::data(const QModelIndex &index, int role) const
     switch (role) {
         case Qt::DisplayRole: return displayData(index);
         case Qt::ToolTipRole: return toolTipData(index);
-        case CurrentRole: return index.row() == _current_char;
+        case CurrentRole:  if (_current_char < 0 || _current_char > m_Characters.size()) return CHAR_NOT_CURRENT;
+                              else if (m_Characters.at(index.row())->isDead()) return CHAR_IS_DEAD;
+                              else if (index.row() == _current_char) return CHAR_IS_CURRENT;
+                              else return CHAR_NOT_CURRENT;
     }
     return QVariant();
 }
@@ -162,6 +165,9 @@ void CharacterModel::startBattle()
     if (m_Characters.isEmpty()) {
         return;
     }
+    foreach(Character *ch, m_Characters) {
+        ch->setDead(false);
+    }
     qSort(m_Characters.begin(), m_Characters.end(), charLessThan);
     _current_char = 0;
     _turn = 1;
@@ -173,12 +179,15 @@ void CharacterModel::startBattle()
 void CharacterModel::nextChar()
 {
     if(m_Characters.isEmpty()) return;
-    ++_current_char;
-    if (_current_char >= m_Characters.size()) {
-        ++_turn;
-        emit turnChanged(_turn);
-        _current_char = 0;
-    }
+    int overlap = _current_char;
+    do {
+        ++_current_char;
+        if (_current_char >= m_Characters.size()) {
+            ++_turn;
+            emit turnChanged(_turn);
+            _current_char = 0;
+        }
+    } while (m_Characters.at(_current_char)->isDead() && _current_char != overlap);
     m_Characters[_current_char]->nextTurn();
     emit dataChanged(index(_current_char, 0), index(_current_char, COLUMN_COUNT - 1));
     emit infoChanged(m_Characters[_current_char]->info());
@@ -295,4 +304,12 @@ void CharacterModel::changeManualEffects(int row)
     selector.exec();
     selector.setupCharacter(m_Characters[row]);
     emit dataChanged(index(row, EFFECTS), index(row, EFFECTS));
+}
+
+void CharacterModel::setCharacterDead(int row, bool dead)
+{
+    if (row < 0 || row > m_Characters.size()) return;
+    m_Characters.at(row)->setDead(dead);
+    emit dataChanged(index(row, 0), index(row, columnCount() - 1));
+    nextChar();
 }
