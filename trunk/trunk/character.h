@@ -35,6 +35,9 @@ class Character
         QString effects() const;
         QString info() const;
 
+        void setDead(bool dead) { _isDead = dead; }
+        bool isDead() { return _isDead; }
+
         QList<QPair<int, QString> > currentManualEffects() const;
         QSet<int> currentManualEffectsIds() const;
         void setManualEffects(const QList<QPair<int, QString> > & effects) { _ManualEffects = effects; }
@@ -71,6 +74,7 @@ class Character
         QList<QPair<int, QString> > _ManualEffects;
         QString _info;
         double _bs;
+        bool _isDead;
 };
 
 #endif // CHARACTER_H
