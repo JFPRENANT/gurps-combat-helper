@@ -25,7 +25,8 @@ SOURCES += main.cpp \
     stanza.cpp \
     xmlparser.cpp \
     manualeffectseditor.cpp \
-    manualeffectsselector.cpp
+    manualeffectsselector.cpp \
+    mytableview.cpp
 
 HEADERS += mainform.h \
     charactereditor.h \
@@ -48,7 +49,8 @@ HEADERS += mainform.h \
     stanza.h \
     xmlparser.h \
     manualeffectseditor.h \
-    manualeffectsselector.h
+    manualeffectsselector.h \
+    mytableview.h
 
 FORMS += mainform.ui \
     charactereditor.ui \

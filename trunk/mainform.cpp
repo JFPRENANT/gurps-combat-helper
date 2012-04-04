@@ -29,6 +29,7 @@ MainForm::MainForm(QWidget *parent) :
 
     connect(m_pPosturesAndManueres, SIGNAL(dictionariesUpdated()), &m_Chars, SLOT(onDictionariesUpdate()));
     connect(ui->aClearEncounter, SIGNAL(triggered()), &m_Chars, SLOT(clearEncounter()));
+    connect(ui->tvChars, SIGNAL(characterDead(int)), SLOT(onCharMarkDead(int)));
     QToolBar *bar = new QToolBar;
     foreach(QAction *acc, ui->menuCommands->actions()) {
         bar->addAction(acc);
@@ -141,3 +142,9 @@ void MainForm::on_aCurrent_Dead_triggered()
 {
     m_Chars.setCharacterDead(m_Chars.currentChar(), true);
 }
+
+void MainForm::onCharMarkDead(int row)
+{
+    m_Chars.setCharacterDead(row, true);
+}
+
