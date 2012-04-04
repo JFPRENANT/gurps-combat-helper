@@ -35,6 +35,8 @@ class MainForm : public QMainWindow {
         void on_aLoadParty_triggered();
         void on_aLoadEncounter_triggered();
         void on_aCurrent_Dead_triggered();
+
+        void onCharMarkDead(int row);
     private:
         void selectManeuer(int row);
         void selectPosture(int row);

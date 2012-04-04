@@ -311,5 +311,5 @@ void CharacterModel::setCharacterDead(int row, bool dead)
     if (row < 0 || row > m_Characters.size()) return;
     m_Characters.at(row)->setDead(dead);
     emit dataChanged(index(row, 0), index(row, columnCount() - 1));
-    nextChar();
+    if (row == _current_char) nextChar();
 }

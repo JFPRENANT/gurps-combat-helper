@@ -120,7 +120,7 @@
       <property name="orientation">
        <enum>Qt::Vertical</enum>
       </property>
-      <widget class="QTableView" name="tvChars">
+      <widget class="MyTableView" name="tvChars">
        <property name="selectionMode">
         <enum>QAbstractItemView::NoSelection</enum>
        </property>
@@ -298,6 +298,13 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MyTableView</class>
+   <extends>QTableView</extends>
+   <header>mytableview.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>
