@@ -131,6 +131,9 @@ void Database::saveCharacter(const QVariantMap & character)
     QString charId = data["uuid"].toString();
     if (charId.isEmpty()) { // new character
         data["uuid"] = QUuid::createUuid().toString();
+    }
+    int index = data[ID].toInt();
+    if (!index) { // new character
         sql = "INSERT INTO characters (`%1`) VALUES ('%2')";
         bSet = false;
     } else {
