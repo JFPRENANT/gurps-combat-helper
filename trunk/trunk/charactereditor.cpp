@@ -19,12 +19,13 @@ CharacterEditor::CharacterEditor(QWidget *parent) :
     connect(ui->sbIQ, SIGNAL(valueChanged(int)), this, SLOT(onIqChange(int)));
     connect(ui->sbHT, SIGNAL(valueChanged(int)), this, SLOT(onHtChange(int)));
 
-    QPushButton *import = new QPushButton(tr("Import"));
-    connect(import, SIGNAL(clicked), SLOT(onImport()));
+    QPushButton *import = new QPushButton(tr("Import"), ui->buttonBox);
     ui->buttonBox->addButton(import, QDialogButtonBox::ActionRole);
-    QPushButton *exp = new QPushButton(tr("Export"));
-    connect(exp, SIGNAL(clicked()), SLOT(onExport()));
+    connect(import, SIGNAL(clicked()),this, SLOT(onImport()));
+    QPushButton *exp = new QPushButton(tr("Export"), ui->buttonBox);
     ui->buttonBox->addButton(exp, QDialogButtonBox::ActionRole);
+    connect(exp, SIGNAL(clicked()), SLOT(onExport()));
+
 }
 
 CharacterEditor::~CharacterEditor()
