@@ -1,0 +1,1 @@
+program to help tracking battle in GURPS games
